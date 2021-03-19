@@ -13,7 +13,7 @@ class EdhPodGeneratorApiApplicationTests {
 
 	@Test
 	void testWorks(){
-		assertTrue(true);
+		assertTrue(false);
 	}
 
 }
