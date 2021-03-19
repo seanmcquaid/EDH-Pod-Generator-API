@@ -12,7 +12,5 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '11.0.2'
-      - name: Install maven modules
-        run: mvn install
       - name: Run Unit Tests
         run: mvn test
