@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS migrations.user (
+CREATE TABLE IF NOT EXISTS "user_info" (
     "id" serial,
     "username" text NOT NULL,
     "password" text NOT NULL,
