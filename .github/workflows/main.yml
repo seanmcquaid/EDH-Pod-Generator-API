@@ -26,6 +26,12 @@ jobs:
           path: './src/main/resources/application-prod.properties'
           property: 'spring.datasource.password'
           value: ${{secrets.HEROKU_PG_PASS}}
+      - name: Write Spring Profile to Properties-file
+        uses: christian-draeger/write-properties@1.0.1
+        with:
+          path: './src/main/resources/application.properties'
+          property: 'spring.profiles.active'
+          value: 'prod'
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
