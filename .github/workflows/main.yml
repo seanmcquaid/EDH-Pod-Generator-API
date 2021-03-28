@@ -8,24 +8,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Write PG url to Properties-file
+      - name: Write PG url to Prod Properties-file
         uses: christian-draeger/write-properties@1.0.1
         with:
-          path: './src/main/resources/application.properties'
+          path: './src/main/resources/application-prod.properties'
           property: 'spring.datasource.url'
           value: ${{secrets.HEROKU_PG_URL}}
-      - name: Write PG user to Properties-file
+      - name: Write PG user to Prod Properties-file
         uses: christian-draeger/write-properties@1.0.1
         with:
-          path: './src/main/resources/application.properties'
+          path: './src/main/resources/application-prod.properties'
           property: 'spring.datasource.username'
           value: ${{secrets.HEROKU_PG_USER}}
-      - name: Write PG password to Properties-file
+      - name: Write PG password to Prod Properties-file
+        uses: christian-draeger/write-properties@1.0.1
+        with:
+          path: './src/main/resources/application-prod.properties'
+          property: 'spring.datasource.password'
+          value: ${{secrets.HEROKU_PG_PASS}}
+      - name: Write Spring Profile to Properties-file
         uses: christian-draeger/write-properties@1.0.1
         with:
           path: './src/main/resources/application.properties'
-          property: 'spring.datasource.password'
-          value: ${{secrets.HEROKU_PG_PASS}}
+          property: 'spring.profiles.active'
+          value: 'prod'
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}

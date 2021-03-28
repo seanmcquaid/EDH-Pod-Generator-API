@@ -18,5 +18,11 @@ jobs:
           postgresql db: 'podGenerator'
           postgresql user: ${{secrets.POSTGRES_USER}}
           postgresql password: ${{secrets.POSTGRES_PASSWORD}}
+      - name: Write Spring Profile to Properties-file
+        uses: christian-draeger/write-properties@1.0.1
+        with:
+          path: './src/main/resources/application.properties'
+          property: 'spring.profiles.active'
+          value: 'dev'
       - name: Run Unit Tests
         run: mvn test
