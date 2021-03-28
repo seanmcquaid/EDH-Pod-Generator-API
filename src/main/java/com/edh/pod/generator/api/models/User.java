@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_info")
 public class User {
+
     @Id
     @GeneratedValue()
     private Integer id;
@@ -14,4 +15,9 @@ public class User {
 
     @Column
     private String password;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
