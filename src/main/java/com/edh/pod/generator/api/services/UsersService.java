@@ -14,4 +14,12 @@ public class UsersService {
     public boolean doesUserExist(String username){
         return userRepository.findUserByUsername(username).size() != 0;
     }
+
+    public User addUser(String username, String password){
+        return userRepository.addUser(username, password).get(0);
+    }
+
+    public User getUserInfoByUsername(String username){
+        return userRepository.findUserByUsername(username).get(0);
+    }
 }

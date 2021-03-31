@@ -23,6 +23,9 @@ public class UsersController {
             return ResponseEntity.status(401).build();
         }
 
+        User newUserInfo = usersService.addUser(user.getUsername(), user.getPassword());
+
+
         return ResponseEntity.ok().build();
     }
 
