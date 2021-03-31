@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "user_info" (
+CREATE TABLE IF NOT EXISTS "users" (
     "id" serial,
     "username" text NOT NULL,
     "password" text NOT NULL,
