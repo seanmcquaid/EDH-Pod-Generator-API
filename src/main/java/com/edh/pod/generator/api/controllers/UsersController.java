@@ -39,11 +39,12 @@ public class UsersController {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         User newUserInfo = usersService.addUser(user.getUsername(), encodedPassword);
 
-//        generate JWT and send in response
+//        generate JWT and send in response (This will be done on a diff PR)
 
+        Map<String, String> body = new HashMap<>();
+        body.put("username", newUserInfo.getUsername());
 
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @PostMapping("/login")
