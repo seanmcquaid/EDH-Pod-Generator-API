@@ -3,7 +3,7 @@ package com.edh.pod.generator.api.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_info")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue()
@@ -14,4 +14,28 @@ public class User {
 
     @Column
     private String password;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
