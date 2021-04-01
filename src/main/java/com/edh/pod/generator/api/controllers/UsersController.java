@@ -21,7 +21,7 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UsersController() {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
