@@ -41,7 +41,7 @@ public class UsersController {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         User newUserInfo = usersService.addUser(user.getUsername(), encodedPassword);
 
-        String token = jwtBuilder.generateToken(newUserInfo.getUsername());
+        String token = usersService.generateToken(newUserInfo.getUsername());
 
         Map<String, String> body = new HashMap<>();
         body.put("token", token);
@@ -67,7 +67,7 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
         }
 
-        String token = jwtBuilder.generateToken(userInfo.getUsername());
+        String token = usersService.generateToken(userInfo.getUsername());
 
         Map<String, String> body = new HashMap<>();
         body.put("token", token);

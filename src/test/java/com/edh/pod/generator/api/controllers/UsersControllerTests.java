@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.*;
@@ -66,6 +65,7 @@ public class UsersControllerTests {
 
         when(usersService.doesUserExist("sean")).thenReturn(false);
         when(usersService.addUser(any(String.class), any(String.class))).thenReturn(testUser);
+        when(usersService.generateToken(any(String.class))).thenReturn("sean");
 
         mockMvc.perform(post("/users/register")
                 .content(testUtils.asJsonString(testUser))
@@ -129,6 +129,7 @@ public class UsersControllerTests {
 
         when(usersService.doesUserExist("sean")).thenReturn(true);
         when(usersService.getUserInfoByUsername("sean")).thenReturn(testUserWithEncodedPassword);
+        when(usersService.generateToken(any(String.class))).thenReturn("sean");
 
         mockMvc.perform(post("/users/login")
                 .content(testUtils.asJsonString(testUser))
