@@ -65,6 +65,7 @@ public class UsersControllerTests {
 
         when(usersService.doesUserExist("sean")).thenReturn(false);
         when(usersService.addUser(any(String.class), any(String.class))).thenReturn(testUser);
+        when(usersService.generateToken(any(String.class))).thenReturn("sean");
 
         mockMvc.perform(post("/users/register")
                 .content(testUtils.asJsonString(testUser))
@@ -128,6 +129,7 @@ public class UsersControllerTests {
 
         when(usersService.doesUserExist("sean")).thenReturn(true);
         when(usersService.getUserInfoByUsername("sean")).thenReturn(testUserWithEncodedPassword);
+        when(usersService.generateToken(any(String.class))).thenReturn("sean");
 
         mockMvc.perform(post("/users/login")
                 .content(testUtils.asJsonString(testUser))

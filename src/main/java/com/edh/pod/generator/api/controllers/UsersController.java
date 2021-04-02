@@ -2,29 +2,31 @@ package com.edh.pod.generator.api.controllers;
 
 import com.edh.pod.generator.api.models.User;
 import com.edh.pod.generator.api.services.UsersService;
+import com.edh.pod.generator.api.utils.JwtBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/users")
 public class UsersController {
 
     @Autowired
     private UsersService usersService;
 
+    private final JwtBuilder jwtBuilder;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UsersController() {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        this.jwtBuilder = new JwtBuilder();
     }
 
     @PostMapping("/register")
@@ -39,10 +41,10 @@ public class UsersController {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         User newUserInfo = usersService.addUser(user.getUsername(), encodedPassword);
 
-//        generate JWT and send in response (This will be done on a diff PR)
+        String token = usersService.generateToken(newUserInfo.getUsername());
 
         Map<String, String> body = new HashMap<>();
-        body.put("token", newUserInfo.getUsername());
+        body.put("token", token);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
@@ -65,10 +67,10 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
         }
 
-//        generate JWT and send in response (This will be done on a diff PR)
+        String token = usersService.generateToken(userInfo.getUsername());
 
         Map<String, String> body = new HashMap<>();
-        body.put("token", userInfo.getUsername());
+        body.put("token", token);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
