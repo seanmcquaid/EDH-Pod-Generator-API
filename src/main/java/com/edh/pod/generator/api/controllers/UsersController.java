@@ -42,7 +42,7 @@ public class UsersController {
 //        generate JWT and send in response (This will be done on a diff PR)
 
         Map<String, String> body = new HashMap<>();
-        body.put("username", newUserInfo.getUsername());
+        body.put("token", newUserInfo.getUsername());
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
