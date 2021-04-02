@@ -69,4 +69,21 @@ public class UsersControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").value("sean"));
     }
+
+    @Test
+    public void loginUserDoesNotExistText() throws Exception {
+        User testUser = new User();
+        testUser.setId(1);
+        testUser.setUsername("sean");
+        testUser.setPassword("password");
+
+        when(usersService.doesUserExist("sean")).thenReturn(false);
+
+        mockMvc.perform(post("/users/login")
+                .content(testUtils.asJsonString(testUser))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.errorMessage").value("This user doesn't exist, please try another one"));
+    }
 }

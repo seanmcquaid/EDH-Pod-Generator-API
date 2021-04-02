@@ -65,7 +65,7 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
         }
 
-        //        generate JWT and send in response (This will be done on a diff PR)
+//        generate JWT and send in response (This will be done on a diff PR)
 
         Map<String, String> body = new HashMap<>();
         body.put("token", userInfo.getUsername());
