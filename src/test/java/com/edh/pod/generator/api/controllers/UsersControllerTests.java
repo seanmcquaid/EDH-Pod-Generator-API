@@ -67,6 +67,6 @@ public class UsersControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("sean"));
+                .andExpect(jsonPath("$.token").value("sean"));
     }
 }
