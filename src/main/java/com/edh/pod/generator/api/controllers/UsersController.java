@@ -22,13 +22,13 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    @Autowired
-    private JwtBuilder jwtBuilder;
+    private final JwtBuilder jwtBuilder;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UsersController() {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        this.jwtBuilder = new JwtBuilder();
     }
 
     @PostMapping("/register")
