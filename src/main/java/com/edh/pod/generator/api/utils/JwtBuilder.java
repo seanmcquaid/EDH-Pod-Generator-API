@@ -17,14 +17,13 @@ import java.util.Map;
 @Component
 public class JwtBuilder {
 
-    @Value("jwt.secret")
+    @Value("${jwt.secret}")
     private String jwtSecret;
 
     public String generateToken(String username){
-        System.out.println(jwtSecret);
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         Date now = new Date();
-        Date exp = new Date(System.currentTimeMillis() + (1000000 * 30));
+        Date exp = new Date(System.currentTimeMillis() + (1000 * 30));
 
         return Jwts.builder()
                 .setSubject(username)
