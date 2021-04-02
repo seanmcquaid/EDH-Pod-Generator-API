@@ -48,7 +48,28 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody User user){
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Map<String, String>> login(@RequestBody User user){
+        boolean doesUserExist = usersService.doesUserExist(user.getUsername());
+        if(!doesUserExist){
+            Map<String, String> body = new HashMap<>();
+            body.put("errorMessage", "This user doesn't exist, please try another one");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        }
+
+        User userInfo = usersService.getUserInfoByUsername(user.getUsername());
+        boolean isPasswordCorrect = bCryptPasswordEncoder.matches(user.getPassword(), userInfo.getPassword());
+
+        if(!isPasswordCorrect){
+            Map<String, String> body = new HashMap<>();
+            body.put("errorMessage", "This password isn't correct, please try another one");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        }
+
+//        generate JWT and send in response (This will be done on a diff PR)
+
+        Map<String, String> body = new HashMap<>();
+        body.put("token", userInfo.getUsername());
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 }
