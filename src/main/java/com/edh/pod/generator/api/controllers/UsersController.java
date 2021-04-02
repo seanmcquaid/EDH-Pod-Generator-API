@@ -2,6 +2,7 @@ package com.edh.pod.generator.api.controllers;
 
 import com.edh.pod.generator.api.models.User;
 import com.edh.pod.generator.api.services.UsersService;
+import com.edh.pod.generator.api.utils.JwtBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,9 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private JwtBuilder jwtBuilder;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UsersController() {
@@ -39,10 +43,10 @@ public class UsersController {
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         User newUserInfo = usersService.addUser(user.getUsername(), encodedPassword);
 
-//        generate JWT and send in response (This will be done on a diff PR)
+        String token = jwtBuilder.generateToken(newUserInfo.getUsername());
 
         Map<String, String> body = new HashMap<>();
-        body.put("token", newUserInfo.getUsername());
+        body.put("token", token);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
