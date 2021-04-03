@@ -18,7 +18,7 @@ public class PodsService {
         return podRepository.getPod(podInfo.getOwner(), podInfo.getName());
     }
 
-    public List<Pod> getPods(String owner, String name){
-        return podRepository.getPod(owner, name);
+    public List<Pod> getPods(String owner){
+        return podRepository.getPods(owner);
     }
 }
