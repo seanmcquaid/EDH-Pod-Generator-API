@@ -20,15 +20,6 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    private final JwtBuilder jwtBuilder;
-
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    public UsersController() {
-        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        this.jwtBuilder = new JwtBuilder();
-    }
-
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody User user){
         boolean doesUserExist = usersService.doesUserExist(user.getUsername());
@@ -38,7 +29,7 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
         }
 
-        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        String encodedPassword = usersService.encodePassword(user.getPassword());
         User newUserInfo = usersService.addUser(user.getUsername(), encodedPassword);
 
         String token = usersService.generateToken(newUserInfo.getUsername());
@@ -59,7 +50,7 @@ public class UsersController {
         }
 
         User userInfo = usersService.getUserInfoByUsername(user.getUsername());
-        boolean isPasswordCorrect = bCryptPasswordEncoder.matches(user.getPassword(), userInfo.getPassword());
+        boolean isPasswordCorrect = usersService.isPasswordCorrect(user.getPassword(), userInfo.getPassword());
 
         if(!isPasswordCorrect){
             Map<String, String> body = new HashMap<>();

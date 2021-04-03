@@ -4,6 +4,7 @@ import com.edh.pod.generator.api.models.User;
 import com.edh.pod.generator.api.repositories.UserRepository;
 import com.edh.pod.generator.api.utils.JwtBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -16,6 +17,13 @@ public class UsersService {
 
     @Autowired
     private JwtBuilder jwtBuilder;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UsersService() {
+        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    }
+
 
     public boolean doesUserExist(String username){
         return userRepository.findUserByUsername(username).size() != 0;
@@ -39,5 +47,13 @@ public class UsersService {
 
     public Map<?, ?> decodeToken(String token){
         return jwtBuilder.decodeToken(token);
+    }
+
+    public String encodePassword(String password) {
+        return bCryptPasswordEncoder.encode(password);
+    }
+
+    public boolean isPasswordCorrect(String providedPassword, String passwordFromDb){
+        return bCryptPasswordEncoder.matches(providedPassword, passwordFromDb);
     }
 }
