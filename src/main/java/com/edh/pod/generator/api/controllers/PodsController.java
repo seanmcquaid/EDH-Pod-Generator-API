@@ -4,15 +4,17 @@ import com.edh.pod.generator.api.models.Pod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/pods")
+@RestController
+@CrossOrigin
+@RequestMapping("/pods")
 public class PodsController {
 
-    @GetMapping()
+    @GetMapping("/")
     public ResponseEntity getPods(){
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping()
+    @PostMapping("/")
     public ResponseEntity addPod(@RequestBody Pod pod){
         return ResponseEntity.ok().build();
     }

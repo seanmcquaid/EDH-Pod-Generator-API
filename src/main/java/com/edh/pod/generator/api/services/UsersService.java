@@ -6,6 +6,8 @@ import com.edh.pod.generator.api.utils.JwtBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class UsersService {
 
@@ -33,5 +35,9 @@ public class UsersService {
 
     public boolean isTokenValid(String token){
         return jwtBuilder.isTokenValid(token);
+    }
+
+    public Map<?, ?> decodeToken(String token){
+        return jwtBuilder.decodeToken(token);
     }
 }

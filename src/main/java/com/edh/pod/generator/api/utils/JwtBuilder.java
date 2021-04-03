@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtBuilder {
@@ -19,7 +20,7 @@ public class JwtBuilder {
     public String generateToken(String username){
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         Date now = new Date();
-        Date exp = new Date(System.currentTimeMillis() + (1000 * 30));
+        Date exp = new Date(System.currentTimeMillis() + (100000 * 30));
 
         return Jwts.builder()
                 .setSubject(username)
@@ -38,6 +39,15 @@ public class JwtBuilder {
         }
         catch (JwtException jwtException){
             return false;
+        }
+    }
+
+    public Map<?, ?> decodeToken(String token){
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+        try{
+            return (Map<?, ?>) Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        }catch(JwtException jwtException){
+            return null;
         }
     }
 }
