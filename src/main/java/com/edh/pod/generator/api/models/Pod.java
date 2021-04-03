@@ -3,7 +3,7 @@ package com.edh.pod.generator.api.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "pod")
+@Table(name = "pods")
 public class Pod {
     @Id
     @GeneratedValue()
