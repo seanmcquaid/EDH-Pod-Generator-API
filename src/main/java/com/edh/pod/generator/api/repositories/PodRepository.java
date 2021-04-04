@@ -16,5 +16,5 @@ public interface PodRepository extends JpaRepository<Pod, Integer>{
     List<Pod> getPods(@Param("owner") String owner);
 
     @Query(value = "select * from pods where owner = :owner and name = :name", nativeQuery = true)
-    List<Pod> getPod(@Param("owner") String owner, @Param("name") String name);
+    List<Pod> getPodByOwnerAndName(@Param("owner") String owner, @Param("name") String name);
 }

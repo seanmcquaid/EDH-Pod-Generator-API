@@ -17,7 +17,11 @@ public class PodsService {
 
     public List<Pod> addPodMember(Pod podInfo){
         podRepository.addPodMember(podInfo.getOwner(), podInfo.getMember(), podInfo.getMemberEmail(), podInfo.getSpellTableUrl(), podInfo.getName());
-        return podRepository.getPod(podInfo.getOwner(), podInfo.getName());
+        return podRepository.getPodByOwnerAndName(podInfo.getOwner(), podInfo.getName());
+    }
+
+    public List<Pod> getPod(Pod podInfo){
+        return podRepository.getPodByOwnerAndName(podInfo.getOwner(), podInfo.getName());
     }
 
     public List<Pod> getPods(String owner){
