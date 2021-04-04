@@ -9,7 +9,6 @@ import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Map;
 
 @Component
 public class JwtBuilder {
@@ -42,10 +41,10 @@ public class JwtBuilder {
         }
     }
 
-    public Map<?, ?> decodeToken(String token){
+    public Jws<Claims> decodeToken(String token){
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         try{
-            return (Map<?, ?>) Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         }catch(JwtException jwtException){
             return null;
         }

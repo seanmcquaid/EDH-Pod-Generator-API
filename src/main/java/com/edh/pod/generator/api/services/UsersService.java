@@ -3,11 +3,11 @@ package com.edh.pod.generator.api.services;
 import com.edh.pod.generator.api.models.User;
 import com.edh.pod.generator.api.repositories.UserRepository;
 import com.edh.pod.generator.api.utils.JwtBuilder;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class UsersService {
@@ -45,7 +45,7 @@ public class UsersService {
         return jwtBuilder.isTokenValid(token);
     }
 
-    public Map<?, ?> decodeToken(String token){
+    public Jws<Claims> decodeToken(String token){
         return jwtBuilder.decodeToken(token);
     }
 

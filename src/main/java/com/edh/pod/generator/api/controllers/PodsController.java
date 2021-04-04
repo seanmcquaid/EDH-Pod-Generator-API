@@ -4,9 +4,16 @@ import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.services.PodsService;
 import com.edh.pod.generator.api.services.UsersService;
 import com.edh.pod.generator.api.utils.JwtBuilder;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -21,13 +28,35 @@ public class PodsController {
 
     @GetMapping
     public ResponseEntity getPods(@RequestHeader("Authorization") String authHeader){
-        System.out.println();
-        return ResponseEntity.ok().build();
+        boolean isTokenValid = usersService.isTokenValid(authHeader);
+        if(!isTokenValid){
+            Map<String, String> body = new HashMap<>();
+            body.put("errorMessage", "The provided token isn't valid, please login again");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        }
+        Jws<Claims> token = usersService.decodeToken(authHeader);
+        List<Pod> pods = podsService.getPods(token.getBody().getSubject());
+
+        Map<String, List<Pod>> body = new HashMap<>();
+        body.put("pods", pods);
+
+        return ResponseEntity.ok().body(body);
     }
 
     @PostMapping
-    public ResponseEntity addPod(@RequestBody Pod pod){
-        return ResponseEntity.ok().build();
+    public ResponseEntity addPod(@RequestHeader("Authorization") String authHeader, @RequestBody Pod pod){
+        boolean isTokenValid = usersService.isTokenValid(authHeader);
+        if(!isTokenValid){
+            Map<String, String> body = new HashMap<>();
+            body.put("errorMessage", "The provided token isn't valid, please login again");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        }
+        List<Pod> pods = podsService.addPodMember(pod);
+
+        Map<String, List<Pod>> body = new HashMap<>();
+        body.put("pods", pods);
+
+        return ResponseEntity.ok().body(body);
     }
 
     @GetMapping("/{id}")
