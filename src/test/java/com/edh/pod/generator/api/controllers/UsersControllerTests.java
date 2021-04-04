@@ -32,7 +32,6 @@ public class UsersControllerTests {
     private final TestUtils testUtils;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
     public UsersControllerTests() {
         this.testUtils = new TestUtils();
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
