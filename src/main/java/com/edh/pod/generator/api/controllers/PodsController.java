@@ -35,6 +35,7 @@ public class PodsController {
         }
         Jws<Claims> token = usersService.decodeToken(authHeader);
         List<Pod> pods = podsService.getPods(token.getBody().getSubject());
+//        split into actual pods
 
         Map<String, List<Pod>> body = new HashMap<>();
         body.put("pods", pods);
@@ -42,8 +43,8 @@ public class PodsController {
         return ResponseEntity.ok().body(body);
     }
 
-    @PostMapping
-    public ResponseEntity addPod(@RequestHeader("Authorization") String authHeader, @RequestBody Pod pod){
+    @PostMapping("/member")
+    public ResponseEntity addPodMember(@RequestHeader("Authorization") String authHeader, @RequestBody Pod pod){
         boolean isTokenValid = usersService.isTokenValid(authHeader);
         if(!isTokenValid){
             Map<String, String> body = new HashMap<>();

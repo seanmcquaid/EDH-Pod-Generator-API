@@ -5,7 +5,9 @@ import com.edh.pod.generator.api.repositories.PodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PodsService {
@@ -20,5 +22,20 @@ public class PodsService {
 
     public List<Pod> getPods(String owner){
         return podRepository.getPods(owner);
+    }
+
+    public List<List<Pod>> sortIntoPods(List<Pod> pods){
+        List<String> names = new ArrayList<>();
+        List<List<Pod>> sortedPods = new ArrayList<>();
+        pods.forEach(pod -> {
+            if(!names.contains(pod.getName())){
+                names.add(pod.getName());
+            }
+        });
+        names.forEach(name -> {
+            List<Pod> podInfoForName = pods.stream().filter(pod -> pod.getName().equals(name)).collect(Collectors.toList());
+            sortedPods.add(podInfoForName);
+        });
+        return sortedPods;
     }
 }
