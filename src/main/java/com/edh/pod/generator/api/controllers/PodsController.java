@@ -3,7 +3,6 @@ package com.edh.pod.generator.api.controllers;
 import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.services.PodsService;
 import com.edh.pod.generator.api.services.UsersService;
-import com.edh.pod.generator.api.utils.JwtBuilder;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
