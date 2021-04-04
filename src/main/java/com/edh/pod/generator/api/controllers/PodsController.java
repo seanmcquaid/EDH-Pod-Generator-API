@@ -52,17 +52,6 @@ public class PodsController {
             body.put("errorMessage", "The provided token isn't valid, please login again");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
         }
-        Jws<Claims> token = usersService.decodeToken(authHeader);
-        String username = token.getBody().getSubject();
-        pod.setOwner(username);
-
-        List<Pod> podInfo = podsService.getPod(pod);
-
-        if(podInfo.size() == 4){
-            Map<String, String> body = new HashMap<>();
-            body.put("errorMessage", "The pod is currently already at 4 people, you will need to delete a member to add a new one!");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
-        }
 
         List<Pod> pods = podsService.addPodMember(pod);
         List<List<Pod>> sortedPods = podsService.sortIntoPods(pods);
