@@ -2,12 +2,10 @@ package com.edh.pod.generator.api.controllers;
 
 import com.edh.pod.generator.api.models.User;
 import com.edh.pod.generator.api.services.UsersService;
-import com.edh.pod.generator.api.utils.JwtBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.HashMap;
 import java.util.Map;

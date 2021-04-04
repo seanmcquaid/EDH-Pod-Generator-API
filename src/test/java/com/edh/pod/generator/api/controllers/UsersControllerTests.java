@@ -107,6 +107,7 @@ public class UsersControllerTests {
 
         when(usersService.doesUserExist("sean")).thenReturn(true);
         when(usersService.getUserInfoByUsername("sean")).thenReturn(testUserWithEncodedPassword);
+        when(usersService.isPasswordCorrect(any(String.class), any(String.class))).thenReturn(false);
 
         mockMvc.perform(post("/users/login")
                 .content(testUtils.asJsonString(testUser))
