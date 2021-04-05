@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "pod" (
+CREATE TABLE IF NOT EXISTS "pods" (
     "id" serial,
     "owner" text NOT NULL,
     "member" text NOT NULL,

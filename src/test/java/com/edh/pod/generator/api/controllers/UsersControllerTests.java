@@ -32,7 +32,6 @@ public class UsersControllerTests {
     private final TestUtils testUtils;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
     public UsersControllerTests() {
         this.testUtils = new TestUtils();
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -64,6 +63,7 @@ public class UsersControllerTests {
         testUser.setPassword("password");
 
         when(usersService.doesUserExist("sean")).thenReturn(false);
+        when(usersService.encodePassword(any(String.class))).thenReturn(bCryptPasswordEncoder.encode(testUser.getPassword()));
         when(usersService.addUser(any(String.class), any(String.class))).thenReturn(testUser);
         when(usersService.generateToken(any(String.class))).thenReturn("sean");
 
@@ -106,6 +106,7 @@ public class UsersControllerTests {
 
         when(usersService.doesUserExist("sean")).thenReturn(true);
         when(usersService.getUserInfoByUsername("sean")).thenReturn(testUserWithEncodedPassword);
+        when(usersService.isPasswordCorrect(any(String.class), any(String.class))).thenReturn(false);
 
         mockMvc.perform(post("/users/login")
                 .content(testUtils.asJsonString(testUser))
@@ -129,6 +130,7 @@ public class UsersControllerTests {
 
         when(usersService.doesUserExist("sean")).thenReturn(true);
         when(usersService.getUserInfoByUsername("sean")).thenReturn(testUserWithEncodedPassword);
+        when(usersService.isPasswordCorrect(any(String.class), any(String.class))).thenReturn(true);
         when(usersService.generateToken(any(String.class))).thenReturn("sean");
 
         mockMvc.perform(post("/users/login")
