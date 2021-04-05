@@ -103,7 +103,24 @@ public class PodsControllerTests {
     }
 
     @Test
-    public void addPodMemberAuthNotValidTest(){}
+    public void addPodMemberAuthNotValidTest() throws Exception {
+        Pod pod = new Pod();
+        pod.setId(1);
+        pod.setOwner("sean");
+        pod.setMember("terrell");
+        pod.setMemberEmail("memberemail@gmail.com");
+        pod.setSpellTableUrl("spelltable.com");
+        pod.setName("name1");
+
+        when(usersService.isTokenValid(any(String.class))).thenReturn(false);
+
+        mockMvc.perform(post("/pods/member")
+                .header("Authorization", "token")
+                .content(testUtils.asJsonString(pod))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.errorMessage").value("The provided token isn't valid, please login again"));
+    }
 
     @Test
     public void addPodMemberAuthValidTest(){}
