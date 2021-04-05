@@ -123,5 +123,30 @@ public class PodsControllerTests {
     }
 
     @Test
-    public void addPodMemberAuthValidTest(){}
+    public void addPodMemberAuthValidTest() throws Exception {
+        Pod pod = new Pod();
+        pod.setId(1);
+        pod.setOwner("sean");
+        pod.setMember("terrell");
+        pod.setMemberEmail("memberemail@gmail.com");
+        pod.setSpellTableUrl("spelltable.com");
+        pod.setName("name1");
+
+        List<Pod> pods = new ArrayList<>();
+        pods.add(pod);
+
+        List<List<Pod>> sortedPods = new ArrayList<>();
+        sortedPods.add(pods);
+
+        when(usersService.isTokenValid(any(String.class))).thenReturn(true);
+        when(podsService.addPodMember(any())).thenReturn(pods);
+        when(podsService.sortIntoPods(any())).thenReturn(sortedPods);
+
+        mockMvc.perform(post("/pods/member")
+                .header("Authorization", "token")
+                .content(testUtils.asJsonString(pod))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.pods").isArray());
+    }
 }
