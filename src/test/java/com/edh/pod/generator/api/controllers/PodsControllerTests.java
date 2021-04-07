@@ -138,7 +138,11 @@ public class PodsControllerTests {
         List<List<Pod>> sortedPods = new ArrayList<>();
         sortedPods.add(pods);
 
+        String encodedToken = testUtils.generateToken("sean");
+        Jws<Claims> decodedToken = testUtils.decodeToken(encodedToken);
+
         when(usersService.isTokenValid(any(String.class))).thenReturn(true);
+        when(usersService.decodeToken(any())).thenReturn(decodedToken);
         when(podsService.addPodMember(any(), any())).thenReturn(pods);
         when(podsService.sortIntoPods(any())).thenReturn(sortedPods);
 
