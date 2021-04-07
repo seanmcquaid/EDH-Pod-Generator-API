@@ -15,9 +15,9 @@ public class PodsService {
     @Autowired
     private PodRepository podRepository;
 
-    public List<Pod> addPodMember(Pod podInfo){
-        podRepository.addPodMember(podInfo.getOwner(), podInfo.getMember(), podInfo.getMemberEmail(), podInfo.getSpellTableUrl(), podInfo.getName());
-        return podRepository.getPodByOwnerAndName(podInfo.getOwner(), podInfo.getName());
+    public List<Pod> addPodMember(Pod podInfo, String ownerName){
+        podRepository.addPodMember(ownerName, podInfo.getMember(), podInfo.getMemberEmail(), podInfo.getSpellTableUrl(), podInfo.getName());
+        return podRepository.getPodByOwnerAndName(ownerName, podInfo.getName());
     }
 
     public List<Pod> getPod(Pod podInfo){

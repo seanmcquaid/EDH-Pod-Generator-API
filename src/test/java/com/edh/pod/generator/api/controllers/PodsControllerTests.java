@@ -139,7 +139,7 @@ public class PodsControllerTests {
         sortedPods.add(pods);
 
         when(usersService.isTokenValid(any(String.class))).thenReturn(true);
-        when(podsService.addPodMember(any())).thenReturn(pods);
+        when(podsService.addPodMember(any(), any())).thenReturn(pods);
         when(podsService.sortIntoPods(any())).thenReturn(sortedPods);
 
         mockMvc.perform(post("/pods/member")
