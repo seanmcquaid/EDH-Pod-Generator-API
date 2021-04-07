@@ -29,11 +29,9 @@ public class PodsService {
     }
 
     public List<List<Pod>> sortIntoPods(List<Pod> pods){
-        System.out.println(pods.size());
         List<String> names = new ArrayList<>();
         List<List<Pod>> sortedPods = new ArrayList<>();
         pods.forEach(pod -> {
-            System.out.println(names.contains(pod.getName()));
             if(!names.contains(pod.getName())){
                 names.add(pod.getName());
             }
