@@ -53,7 +53,9 @@ public class PodsController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
         }
 
-        List<Pod> pods = podsService.addPodMember(pod);
+        Jws<Claims> token = usersService.decodeToken(authHeader);
+
+        List<Pod> pods = podsService.addPodMember(pod, token.getBody().getSubject());
         List<List<Pod>> sortedPods = podsService.sortIntoPods(pods);
 
         Map<String, List<List<Pod>>> body = new HashMap<>();
