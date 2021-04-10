@@ -16,7 +16,7 @@ public class PodsService {
     private PodRepository podRepository;
 
     public List<Pod> addPodMember(Pod podInfo, String ownerName){
-        podRepository.addPodMember(ownerName, podInfo.getMember(), podInfo.getMemberEmail(), podInfo.getSpellTableUrl(), podInfo.getName());
+        podRepository.addPodMember(ownerName, podInfo.getMember(), podInfo.getMemberEmail(), podInfo.getName());
         return podRepository.getPodByOwnerAndName(ownerName, podInfo.getName());
     }
 

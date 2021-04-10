@@ -63,7 +63,6 @@ public class PodsControllerTests {
         podOneMember.setOwner("sean");
         podOneMember.setMember("terrell");
         podOneMember.setMemberEmail("memberemail@gmail.com");
-        podOneMember.setSpellTableUrl("spelltable.com");
         podOneMember.setName("name1");
 
         Pod podTwoMember = new Pod();
@@ -71,7 +70,6 @@ public class PodsControllerTests {
         podTwoMember.setOwner("sean");
         podTwoMember.setMember("victor");
         podTwoMember.setMemberEmail("memberemail@gmail.com");
-        podTwoMember.setSpellTableUrl("spelltable.com");
         podTwoMember.setName("name2");
 
         pods.add(podOneMember);
@@ -109,7 +107,6 @@ public class PodsControllerTests {
         pod.setOwner("sean");
         pod.setMember("terrell");
         pod.setMemberEmail("memberemail@gmail.com");
-        pod.setSpellTableUrl("spelltable.com");
         pod.setName("name1");
 
         when(usersService.isTokenValid(any(String.class))).thenReturn(false);
@@ -129,7 +126,6 @@ public class PodsControllerTests {
         pod.setOwner("sean");
         pod.setMember("terrell");
         pod.setMemberEmail("memberemail@gmail.com");
-        pod.setSpellTableUrl("spelltable.com");
         pod.setName("name1");
 
         List<Pod> pods = new ArrayList<>();
