@@ -19,9 +19,6 @@ public class Pod {
     private String memberEmail;
 
     @Column
-    private String spellTableUrl;
-
-    @Column
     private String name;
 
     public Integer getId() {
@@ -44,10 +41,6 @@ public class Pod {
         return owner;
     }
 
-    public String getSpellTableUrl() {
-        return spellTableUrl;
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -66,9 +59,5 @@ public class Pod {
 
     public void setOwner(String owner) {
         this.owner = owner;
-    }
-
-    public void setSpellTableUrl(String spellTableUrl) {
-        this.spellTableUrl = spellTableUrl;
     }
 }
