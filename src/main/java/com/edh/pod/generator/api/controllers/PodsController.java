@@ -1,5 +1,6 @@
 package com.edh.pod.generator.api.controllers;
 
+import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
 import com.edh.pod.generator.api.services.PodsService;
 import com.edh.pod.generator.api.services.UsersService;
@@ -35,10 +36,10 @@ public class PodsController {
         }
 
         Jws<Claims> token = usersService.decodeToken(authHeader);
-        List<PodMember> podMembers = podsService.getPods(token.getBody().getSubject());
-        List<List<PodMember>> sortedPods = podsService.sortIntoPods(podMembers);
+        List<PodMember> podMembers = podsService.getPodMembers(token.getBody().getSubject());
+        List<Pod> sortedPods = podsService.sortIntoPods(podMembers);
 
-        Map<String, List<List<PodMember>>> body = new HashMap<>();
+        Map<String, List<Pod>> body = new HashMap<>();
         body.put("pods", sortedPods);
 
         return ResponseEntity.ok().body(body);
@@ -56,9 +57,9 @@ public class PodsController {
         Jws<Claims> token = usersService.decodeToken(authHeader);
 
         List<PodMember> podMembers = podsService.addPodMember(podMember, token.getBody().getSubject());
-        List<List<PodMember>> sortedPods = podsService.sortIntoPods(podMembers);
+        List<Pod> sortedPods = podsService.sortIntoPods(podMembers);
 
-        Map<String, List<List<PodMember>>> body = new HashMap<>();
+        Map<String, List<Pod>> body = new HashMap<>();
         body.put("pods", sortedPods);
 
         return ResponseEntity.ok().body(body);
@@ -74,8 +75,9 @@ public class PodsController {
         }
 
         Jws<Claims> token = usersService.decodeToken(authHeader);
-        List<PodMember> podMembers = podsService.getPods(token.getBody().getSubject());
-        List<List<PodMember>> sortedPods = podsService.sortIntoPods(podMembers);
+        List<PodMember> podMembers = podsService.getPodMembers(token.getBody().getSubject());
+        List<Pod> sortedPods = podsService.sortIntoPods(podMembers);
+        Pod podInfo = podsService.getPodByName(sortedPods, podName);
 
         return ResponseEntity.ok().build();
     }
