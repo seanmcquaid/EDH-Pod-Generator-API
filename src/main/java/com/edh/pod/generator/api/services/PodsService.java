@@ -1,5 +1,6 @@
 package com.edh.pod.generator.api.services;
 
+import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
 import com.edh.pod.generator.api.repositories.PodMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,9 @@ public class PodsService {
             sortedPods.add(podMemberInfoForName);
         });
         return sortedPods;
+    }
+
+    public Pod getPodByName(List<Pod> pods, String podName){
+        return pods.stream().filter(pod -> pod.getPodName().equals(podName)).findFirst().orElse(null);
     }
 }
