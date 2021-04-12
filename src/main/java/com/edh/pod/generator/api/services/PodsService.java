@@ -1,5 +1,6 @@
 package com.edh.pod.generator.api.services;
 
+import com.edh.pod.generator.api.models.PlayGroup;
 import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
 import com.edh.pod.generator.api.repositories.PodMemberRepository;
@@ -43,5 +44,12 @@ public class PodsService {
 
     public Pod getPodByName(List<Pod> pods, String podName){
         return pods.stream().filter(pod -> pod.getPodName().equals(podName)).findFirst().orElse(null);
+    }
+
+    public List<PlayGroup> sortIntoPlayGroups(Pod pod){
+        int maxPlayGroupSize = 4;
+        double amountOfPlayGroups = Math.ceil(pod.getPodMembers().size() / maxPlayGroupSize);
+
+        return null;
     }
 }
