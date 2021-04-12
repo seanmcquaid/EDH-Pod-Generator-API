@@ -1,6 +1,6 @@
 package com.edh.pod.generator.api.controllers;
 
-import com.edh.pod.generator.api.models.Pod;
+import com.edh.pod.generator.api.models.PodMember;
 import com.edh.pod.generator.api.services.PodsService;
 import com.edh.pod.generator.api.services.UsersService;
 import io.jsonwebtoken.Claims;
@@ -35,17 +35,17 @@ public class PodsController {
         }
 
         Jws<Claims> token = usersService.decodeToken(authHeader);
-        List<Pod> pods = podsService.getPods(token.getBody().getSubject());
-        List<List<Pod>> sortedPods = podsService.sortIntoPods(pods);
+        List<PodMember> podMembers = podsService.getPods(token.getBody().getSubject());
+        List<List<PodMember>> sortedPods = podsService.sortIntoPods(podMembers);
 
-        Map<String, List<List<Pod>>> body = new HashMap<>();
+        Map<String, List<List<PodMember>>> body = new HashMap<>();
         body.put("pods", sortedPods);
 
         return ResponseEntity.ok().body(body);
     }
 
     @PostMapping("/member")
-    public ResponseEntity addPodMember(@RequestHeader("Authorization") String authHeader, @RequestBody Pod pod){
+    public ResponseEntity addPodMember(@RequestHeader("Authorization") String authHeader, @RequestBody PodMember podMember){
         boolean isTokenValid = usersService.isTokenValid(authHeader);
         if(!isTokenValid){
             Map<String, String> body = new HashMap<>();
@@ -55,10 +55,10 @@ public class PodsController {
 
         Jws<Claims> token = usersService.decodeToken(authHeader);
 
-        List<Pod> pods = podsService.addPodMember(pod, token.getBody().getSubject());
-        List<List<Pod>> sortedPods = podsService.sortIntoPods(pods);
+        List<PodMember> podMembers = podsService.addPodMember(podMember, token.getBody().getSubject());
+        List<List<PodMember>> sortedPods = podsService.sortIntoPods(podMembers);
 
-        Map<String, List<List<Pod>>> body = new HashMap<>();
+        Map<String, List<List<PodMember>>> body = new HashMap<>();
         body.put("pods", sortedPods);
 
         return ResponseEntity.ok().body(body);
@@ -70,7 +70,7 @@ public class PodsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity editPod(@RequestBody Pod pod, @PathVariable("id") String podId){
+    public ResponseEntity editPod(@RequestBody PodMember podMember, @PathVariable("id") String podId){
         return ResponseEntity.ok().build();
     }
 

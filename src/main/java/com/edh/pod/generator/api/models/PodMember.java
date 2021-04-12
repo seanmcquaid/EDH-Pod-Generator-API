@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "pods")
-public class Pod {
+public class PodMember {
     @Id
     @GeneratedValue()
     private Integer id;
