@@ -1,7 +1,7 @@
 package com.edh.pod.generator.api.services;
 
 import com.edh.pod.generator.api.models.PodMember;
-import com.edh.pod.generator.api.repositories.PodRepository;
+import com.edh.pod.generator.api.repositories.PodMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +13,19 @@ import java.util.stream.Collectors;
 public class PodsService {
 
     @Autowired
-    private PodRepository podRepository;
+    private PodMemberRepository podMemberRepository;
 
     public List<PodMember> addPodMember(PodMember podMemberInfo, String ownerName){
-        podRepository.addPodMember(ownerName, podMemberInfo.getMember(), podMemberInfo.getMemberEmail(), podMemberInfo.getName());
-        return podRepository.getPodByOwnerAndName(ownerName, podMemberInfo.getName());
+        podMemberRepository.addPodMember(ownerName, podMemberInfo.getMember(), podMemberInfo.getMemberEmail(), podMemberInfo.getName());
+        return podMemberRepository.getPodByOwnerAndName(ownerName, podMemberInfo.getName());
     }
 
     public List<PodMember> getPod(PodMember podMemberInfo){
-        return podRepository.getPodByOwnerAndName(podMemberInfo.getOwner(), podMemberInfo.getName());
+        return podMemberRepository.getPodByOwnerAndName(podMemberInfo.getOwner(), podMemberInfo.getName());
     }
 
     public List<PodMember> getPods(String owner){
-        return podRepository.getPods(owner);
+        return podMemberRepository.getPods(owner);
     }
 
     public List<List<PodMember>> sortIntoPods(List<PodMember> podMembers){
