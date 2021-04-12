@@ -1,5 +1,6 @@
 package com.edh.pod.generator.api.services;
 
+import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +45,23 @@ public class PodsServiceTests {
     }
 
     @Test
-    public void getPodByNameTest(){}
+    public void getPodByNameTest(){
+        List<Pod> pods = new ArrayList<>();
+        List<PodMember> podMembers = new ArrayList<>();
+
+        PodMember podMemberOneMember = new PodMember();
+        podMemberOneMember.setId(1);
+        podMemberOneMember.setOwner("sean");
+        podMemberOneMember.setMember("terrell");
+        podMemberOneMember.setMemberEmail("memberemail@gmail.com");
+        podMemberOneMember.setName("name1");
+
+        podMembers.add(podMemberOneMember);
+        Pod pod = new Pod(podMembers, "name1");
+        pods.add(pod);
+
+        assertNotEquals(podsService.getPodByName(pods, "name1"), null);
+    }
 
     @Test
     public void sortIntoPlayGroupsTest(){
