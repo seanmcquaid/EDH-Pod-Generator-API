@@ -64,6 +64,11 @@ public class PodsController {
         return ResponseEntity.ok().body(body);
     }
 
+    @GetMapping("/generate/{name}")
+    public ResponseEntity generatePods(@RequestHeader("Authorization") String authHeader, @PathVariable("name") String podName){
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity getPod(@PathVariable("id") String podId){
         return ResponseEntity.ok().build();
