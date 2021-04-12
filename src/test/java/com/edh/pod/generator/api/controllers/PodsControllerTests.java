@@ -152,4 +152,14 @@ public class PodsControllerTests {
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.pods").isArray());
     }
+
+    @Test
+    public void generatePlaygroupAuthNotValidTest(){
+
+    }
+
+    @Test
+    public void generatePlaygroupAuthValidTest(){
+
+    }
 }
