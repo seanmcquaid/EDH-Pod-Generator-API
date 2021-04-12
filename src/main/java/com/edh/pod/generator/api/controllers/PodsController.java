@@ -66,6 +66,17 @@ public class PodsController {
 
     @GetMapping("/generate/{name}")
     public ResponseEntity generatePods(@RequestHeader("Authorization") String authHeader, @PathVariable("name") String podName){
+        boolean isTokenValid = usersService.isTokenValid(authHeader);
+        if(!isTokenValid){
+            Map<String, String> body = new HashMap<>();
+            body.put("errorMessage", "The provided token isn't valid, please login again");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        }
+
+        Jws<Claims> token = usersService.decodeToken(authHeader);
+        List<PodMember> podMembers = podsService.getPods(token.getBody().getSubject());
+        List<List<PodMember>> sortedPods = podsService.sortIntoPods(podMembers);
+
         return ResponseEntity.ok().build();
     }
 
