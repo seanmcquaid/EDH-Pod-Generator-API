@@ -8,10 +8,10 @@
 		<version>2.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.edh.pod.generator.api</groupId>
-	<artifactId>edh-pod-generator-api</artifactId>
+	<groupId>com.edh.podMember.generator.api</groupId>
+	<artifactId>edh-podMember-generator-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>edh-pod-generator-api</name>
+	<name>edh-podMember-generator-api</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>

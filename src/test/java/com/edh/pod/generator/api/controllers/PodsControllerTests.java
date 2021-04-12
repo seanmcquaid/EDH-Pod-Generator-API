@@ -1,6 +1,6 @@
 package com.edh.pod.generator.api.controllers;
 
-import com.edh.pod.generator.api.models.Pod;
+import com.edh.pod.generator.api.models.PodMember;
 import com.edh.pod.generator.api.services.PodsService;
 import com.edh.pod.generator.api.services.UsersService;
 import com.edh.pod.generator.api.utils.TestUtils;
@@ -56,41 +56,41 @@ public class PodsControllerTests {
 
     @Test
     public void getPodsForUsernameAuthValidTest() throws Exception {
-        List<Pod> pods = new ArrayList<>();
+        List<PodMember> podMembers = new ArrayList<>();
 
-        Pod podOneMember = new Pod();
-        podOneMember.setId(1);
-        podOneMember.setOwner("sean");
-        podOneMember.setMember("terrell");
-        podOneMember.setMemberEmail("memberemail@gmail.com");
-        podOneMember.setName("name1");
+        PodMember podMemberOneMember = new PodMember();
+        podMemberOneMember.setId(1);
+        podMemberOneMember.setOwner("sean");
+        podMemberOneMember.setMember("terrell");
+        podMemberOneMember.setMemberEmail("memberemail@gmail.com");
+        podMemberOneMember.setName("name1");
 
-        Pod podTwoMember = new Pod();
-        podTwoMember.setId(1);
-        podTwoMember.setOwner("sean");
-        podTwoMember.setMember("victor");
-        podTwoMember.setMemberEmail("memberemail@gmail.com");
-        podTwoMember.setName("name2");
+        PodMember podMemberTwoMember = new PodMember();
+        podMemberTwoMember.setId(1);
+        podMemberTwoMember.setOwner("sean");
+        podMemberTwoMember.setMember("victor");
+        podMemberTwoMember.setMemberEmail("memberemail@gmail.com");
+        podMemberTwoMember.setName("name2");
 
-        pods.add(podOneMember);
-        pods.add(podTwoMember);
+        podMembers.add(podMemberOneMember);
+        podMembers.add(podMemberTwoMember);
 
-        List<Pod> podOne = new ArrayList<>();
-        podOne.add(pods.get(0));
+        List<PodMember> podMemberOne = new ArrayList<>();
+        podMemberOne.add(podMembers.get(0));
 
-        List<Pod> podTwo = new ArrayList<>();
-        podTwo.add(pods.get(1));
+        List<PodMember> podMemberTwo = new ArrayList<>();
+        podMemberTwo.add(podMembers.get(1));
 
-        List<List<Pod>> expectedResults = new ArrayList<>();
-        expectedResults.add(podOne);
-        expectedResults.add(podTwo);
+        List<List<PodMember>> expectedResults = new ArrayList<>();
+        expectedResults.add(podMemberOne);
+        expectedResults.add(podMemberTwo);
 
         String encodedToken = testUtils.generateToken("sean");
         Jws<Claims> decodedToken = testUtils.decodeToken(encodedToken);
 
         when(usersService.isTokenValid(any(String.class))).thenReturn(true);
         when(usersService.decodeToken(any())).thenReturn(decodedToken);
-        when(podsService.getPods(any(String.class))).thenReturn(pods);
+        when(podsService.getPods(any(String.class))).thenReturn(podMembers);
         when(podsService.sortIntoPods(any())).thenReturn(expectedResults);
 
         mockMvc.perform(get("/pods")
@@ -102,18 +102,18 @@ public class PodsControllerTests {
 
     @Test
     public void addPodMemberAuthNotValidTest() throws Exception {
-        Pod pod = new Pod();
-        pod.setId(1);
-        pod.setOwner("sean");
-        pod.setMember("terrell");
-        pod.setMemberEmail("memberemail@gmail.com");
-        pod.setName("name1");
+        PodMember podMember = new PodMember();
+        podMember.setId(1);
+        podMember.setOwner("sean");
+        podMember.setMember("terrell");
+        podMember.setMemberEmail("memberemail@gmail.com");
+        podMember.setName("name1");
 
         when(usersService.isTokenValid(any(String.class))).thenReturn(false);
 
         mockMvc.perform(post("/pods/member")
                 .header("Authorization", "token")
-                .content(testUtils.asJsonString(pod))
+                .content(testUtils.asJsonString(podMember))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.errorMessage").value("The provided token isn't valid, please login again"));
@@ -121,30 +121,30 @@ public class PodsControllerTests {
 
     @Test
     public void addPodMemberAuthValidTest() throws Exception {
-        Pod pod = new Pod();
-        pod.setId(1);
-        pod.setOwner("sean");
-        pod.setMember("terrell");
-        pod.setMemberEmail("memberemail@gmail.com");
-        pod.setName("name1");
+        PodMember podMember = new PodMember();
+        podMember.setId(1);
+        podMember.setOwner("sean");
+        podMember.setMember("terrell");
+        podMember.setMemberEmail("memberemail@gmail.com");
+        podMember.setName("name1");
 
-        List<Pod> pods = new ArrayList<>();
-        pods.add(pod);
+        List<PodMember> podMembers = new ArrayList<>();
+        podMembers.add(podMember);
 
-        List<List<Pod>> sortedPods = new ArrayList<>();
-        sortedPods.add(pods);
+        List<List<PodMember>> sortedPods = new ArrayList<>();
+        sortedPods.add(podMembers);
 
         String encodedToken = testUtils.generateToken("sean");
         Jws<Claims> decodedToken = testUtils.decodeToken(encodedToken);
 
         when(usersService.isTokenValid(any(String.class))).thenReturn(true);
         when(usersService.decodeToken(any())).thenReturn(decodedToken);
-        when(podsService.addPodMember(any(), any())).thenReturn(pods);
+        when(podsService.addPodMember(any(), any())).thenReturn(podMembers);
         when(podsService.sortIntoPods(any())).thenReturn(sortedPods);
 
         mockMvc.perform(post("/pods/member")
                 .header("Authorization", "token")
-                .content(testUtils.asJsonString(pod))
+                .content(testUtils.asJsonString(podMember))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.pods").isArray());

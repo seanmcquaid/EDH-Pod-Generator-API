@@ -1,7 +1,7 @@
 package com.edh.pod.generator.api.services;
 
-import com.edh.pod.generator.api.models.Pod;
-import com.edh.pod.generator.api.repositories.PodRepository;
+import com.edh.pod.generator.api.models.PodMember;
+import com.edh.pod.generator.api.repositories.PodMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,32 +13,32 @@ import java.util.stream.Collectors;
 public class PodsService {
 
     @Autowired
-    private PodRepository podRepository;
+    private PodMemberRepository podMemberRepository;
 
-    public List<Pod> addPodMember(Pod podInfo, String ownerName){
-        podRepository.addPodMember(ownerName, podInfo.getMember(), podInfo.getMemberEmail(), podInfo.getName());
-        return podRepository.getPodByOwnerAndName(ownerName, podInfo.getName());
+    public List<PodMember> addPodMember(PodMember podMemberInfo, String ownerName){
+        podMemberRepository.addPodMember(ownerName, podMemberInfo.getMember(), podMemberInfo.getMemberEmail(), podMemberInfo.getName());
+        return podMemberRepository.getPodByOwnerAndName(ownerName, podMemberInfo.getName());
     }
 
-    public List<Pod> getPod(Pod podInfo){
-        return podRepository.getPodByOwnerAndName(podInfo.getOwner(), podInfo.getName());
+    public List<PodMember> getPod(PodMember podMemberInfo){
+        return podMemberRepository.getPodByOwnerAndName(podMemberInfo.getOwner(), podMemberInfo.getName());
     }
 
-    public List<Pod> getPods(String owner){
-        return podRepository.getPods(owner);
+    public List<PodMember> getPods(String owner){
+        return podMemberRepository.getPods(owner);
     }
 
-    public List<List<Pod>> sortIntoPods(List<Pod> pods){
+    public List<List<PodMember>> sortIntoPods(List<PodMember> podMembers){
         List<String> names = new ArrayList<>();
-        List<List<Pod>> sortedPods = new ArrayList<>();
-        pods.forEach(pod -> {
-            if(!names.contains(pod.getName())){
-                names.add(pod.getName());
+        List<List<PodMember>> sortedPods = new ArrayList<>();
+        podMembers.forEach(podMember -> {
+            if(!names.contains(podMember.getName())){
+                names.add(podMember.getName());
             }
         });
         names.forEach(name -> {
-            List<Pod> podInfoForName = pods.stream().filter(pod -> pod.getName().equals(name)).collect(Collectors.toList());
-            sortedPods.add(podInfoForName);
+            List<PodMember> podMemberInfoForName = podMembers.stream().filter(podMember -> podMember.getName().equals(name)).collect(Collectors.toList());
+            sortedPods.add(podMemberInfoForName);
         });
         return sortedPods;
     }
