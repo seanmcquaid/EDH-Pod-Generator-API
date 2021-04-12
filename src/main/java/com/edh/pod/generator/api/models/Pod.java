@@ -4,4 +4,5 @@ import java.util.List;
 
 public class Pod {
     private List<PodMember> podMembers;
+    private String podName;
 }
