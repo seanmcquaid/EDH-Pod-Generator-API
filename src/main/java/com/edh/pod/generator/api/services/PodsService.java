@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,13 +49,22 @@ public class PodsService {
     }
 
     public List<PlayGroup> sortIntoPlayGroups(Pod pod){
+        List<PlayGroup> playGroups = new ArrayList<>();
         int maxPlayGroupSize = 4;
-        double amountOfPlayGroups = Math.ceil(pod.getPodMembers().size() / maxPlayGroupSize);
-        List<Double> podSizes = new ArrayList<>();
+        int amountOfPlayGroups = (int) Math.ceil(pod.getPodMembers().size() / maxPlayGroupSize);
+        int maxPodSize = (int) Math.ceil(pod.getPodMembers().size() / amountOfPlayGroups);
         List<PodMember> podMembers = pod.getPodMembers();
         Collections.shuffle(podMembers);
+        int startingIndex = 0;
+        int endingIndex = maxPodSize - 1;
 
+        while(playGroups.size() != amountOfPlayGroups){
+            List<PodMember> podMemberList = new ArrayList<>(podMembers.subList(startingIndex, endingIndex));
+            playGroups.add(new PlayGroup(podMemberList));
+            startingIndex = endingIndex + 1;
+            endingIndex = Math.min(endingIndex + maxPodSize - 1, podMembers.size() - 1);
+        }
 
-        return null;
+        return playGroups;
     }
 }
