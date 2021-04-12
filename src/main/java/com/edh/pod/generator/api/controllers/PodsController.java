@@ -1,5 +1,6 @@
 package com.edh.pod.generator.api.controllers;
 
+import com.edh.pod.generator.api.models.PlayGroup;
 import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
 import com.edh.pod.generator.api.services.PodsService;
@@ -78,8 +79,12 @@ public class PodsController {
         List<PodMember> podMembers = podsService.getPodMembers(token.getBody().getSubject());
         List<Pod> sortedPods = podsService.sortIntoPods(podMembers);
         Pod podInfo = podsService.getPodByName(sortedPods, podName);
+        List<PlayGroup> playGroups = podsService.sortIntoPlayGroups(podInfo);
 
-        return ResponseEntity.ok().build();
+        Map<String, List<PlayGroup>> body = new HashMap<>();
+        body.put("pods", playGroups);
+
+        return ResponseEntity.ok().body(body);
     }
 
     @GetMapping("/{id}")
