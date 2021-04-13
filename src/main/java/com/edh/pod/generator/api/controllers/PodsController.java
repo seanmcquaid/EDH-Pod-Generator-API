@@ -82,7 +82,7 @@ public class PodsController {
         List<PlayGroup> playGroups = podsService.sortIntoPlayGroups(podInfo);
 
         Map<String, List<PlayGroup>> body = new HashMap<>();
-        body.put("pods", playGroups);
+        body.put("playGroups", playGroups);
 
         return ResponseEntity.ok().body(body);
     }

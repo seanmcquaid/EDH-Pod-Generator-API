@@ -154,8 +154,9 @@ public class PodsControllerTests {
     }
 
     @Test
-    public void generatePlaygroupAuthNotValidTest() throws Exception {
+    public void generatePlayGroupAuthNotValidTest() throws Exception {
         when(usersService.isTokenValid(any(String.class))).thenReturn(false);
+
 
         mockMvc.perform(get("/pods/generate/name1")
                 .header("Authorization", "token")
@@ -165,7 +166,21 @@ public class PodsControllerTests {
     }
 
     @Test
-    public void generatePlaygroupAuthValidTest(){
+    public void generatePlayGroupAuthValidTest() throws Exception {
+        String encodedToken = testUtils.generateToken("sean");
+        Jws<Claims> decodedToken = testUtils.decodeToken(encodedToken);
 
+        when(usersService.isTokenValid(any(String.class))).thenReturn(true);
+        when(usersService.decodeToken(any())).thenReturn(decodedToken);
+        when(podsService.getPodMembers(any())).thenReturn(new ArrayList<>());
+        when(podsService.sortIntoPods(any())).thenReturn(new ArrayList<>());
+        when(podsService.getPodByName(any(), any())).thenReturn(new Pod(new ArrayList<>(), "Pod1"));
+        when(podsService.sortIntoPlayGroups(any())).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get("/pods/generate/name1")
+                .header("Authorization", "token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.playGroups").isArray());
     }
 }
