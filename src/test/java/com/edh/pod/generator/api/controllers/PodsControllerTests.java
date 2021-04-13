@@ -154,8 +154,14 @@ public class PodsControllerTests {
     }
 
     @Test
-    public void generatePlaygroupAuthNotValidTest(){
+    public void generatePlaygroupAuthNotValidTest() throws Exception {
+        when(usersService.isTokenValid(any(String.class))).thenReturn(false);
 
+        mockMvc.perform(get("/pods/generate/name1")
+                .header("Authorization", "token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.errorMessage").value("The provided token isn't valid, please login again"));
     }
 
     @Test
