@@ -50,19 +50,19 @@ public class PodsService {
 
     public List<PlayGroup> sortIntoPlayGroups(Pod pod){
         List<PlayGroup> playGroups = new ArrayList<>();
-        int maxPlayGroupSize = 4;
-        int amountOfPlayGroups = (int) Math.ceil(pod.getPodMembers().size() / maxPlayGroupSize);
-        int maxPodSize = (int) Math.ceil(pod.getPodMembers().size() / amountOfPlayGroups);
+        double maxPlayGroupSize = 4;
+        double amountOfPlayGroups =  Math.ceil(pod.getPodMembers().size() / maxPlayGroupSize);
+        double maxPodSize = Math.ceil(pod.getPodMembers().size() / amountOfPlayGroups);
         List<PodMember> podMembers = pod.getPodMembers();
         Collections.shuffle(podMembers);
         int startingIndex = 0;
-        int endingIndex = maxPodSize - 1;
+        int endingIndex = (int) (maxPodSize);
 
         while(playGroups.size() != amountOfPlayGroups){
             List<PodMember> podMemberList = new ArrayList<>(podMembers.subList(startingIndex, endingIndex));
             playGroups.add(new PlayGroup(podMemberList));
-            startingIndex = endingIndex + 1;
-            endingIndex = Math.min(endingIndex + maxPodSize - 1, podMembers.size() - 1);
+            startingIndex = endingIndex;
+            endingIndex = (int) Math.min(startingIndex + maxPodSize, podMembers.size());
         }
 
         return playGroups;

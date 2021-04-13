@@ -1,5 +1,6 @@
 package com.edh.pod.generator.api.services;
 
+import com.edh.pod.generator.api.models.PlayGroup;
 import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
 import org.junit.Test;
@@ -65,6 +66,21 @@ public class PodsServiceTests {
 
     @Test
     public void sortIntoPlayGroupsTest(){
+        Pod pod = createPod(10);
 
+        assertEquals(podsService.sortIntoPlayGroups(pod).size(), 3);
+        assertEquals(podsService.sortIntoPlayGroups(pod).get(0).getPlayGroupMembers().size(), 4);
+        assertEquals(podsService.sortIntoPlayGroups(pod).get(1).getPlayGroupMembers().size(), 4);
+        assertEquals(podsService.sortIntoPlayGroups(pod).get(2).getPlayGroupMembers().size(), 2);
+    }
+
+    private Pod createPod(int numberOfMembers){
+        List<PodMember> podMembers = new ArrayList<>();
+        for(int i = 0; i < numberOfMembers; i++){
+            PodMember podMember = new PodMember();
+            podMember.setMember("Pod Member " + (i + 1));
+            podMembers.add(podMember);
+        }
+        return new Pod(podMembers, "Pod1");
     }
 }
