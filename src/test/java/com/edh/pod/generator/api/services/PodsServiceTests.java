@@ -68,6 +68,8 @@ public class PodsServiceTests {
     public void sortIntoPlayGroupsTest(){
         Pod pod = createPod(10);
 
+        List<PlayGroup> playGroups = podsService.sortIntoPlayGroups(pod);
+
         assertEquals(podsService.sortIntoPlayGroups(pod).size(), 3);
         assertEquals(podsService.sortIntoPlayGroups(pod).get(0).getPlayGroupMembers().size(), 4);
         assertEquals(podsService.sortIntoPlayGroups(pod).get(1).getPlayGroupMembers().size(), 4);
