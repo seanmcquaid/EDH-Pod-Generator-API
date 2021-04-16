@@ -1,5 +1,7 @@
 package com.edh.pod.generator.api.controllers;
 
+import com.edh.pod.generator.api.models.ContactPod;
+import com.edh.pod.generator.api.models.PlayGroup;
 import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
 import com.edh.pod.generator.api.services.PodsService;
@@ -20,10 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
@@ -183,4 +184,65 @@ public class PodsControllerTests {
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.playGroups").isArray());
     }
+
+//    @Test
+//    public void contactPlayGroupsAuthNotValidTest() throws Exception {
+//        List<String> spellTableUrls = new ArrayList<>();
+//        spellTableUrls.add("spelltable.com");
+//
+//        PodMember podMember = new PodMember();
+//        podMember.setMember("member");
+//        podMember.setMemberEmail("member@gmail.com");
+//        podMember.setId(1);
+//        podMember.setName("name");
+//        podMember.setOwner("owner");
+//
+//        List<PodMember> podMembers = new ArrayList<>();
+//        podMembers.add(podMember);
+//
+//        List<PlayGroup> playGroups = new ArrayList<>();
+//        playGroups.add(new PlayGroup(podMembers));
+//
+//        ContactPod contactPod = new ContactPod(spellTableUrls, playGroups);
+//        when(usersService.isTokenValid(any(String.class))).thenReturn(false);
+//
+//        mockMvc.perform(post("/pods/contact")
+//                .header("Authorization", "token")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(testUtils.asJsonString(contactPod))
+//                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized())
+//                .andExpect(jsonPath("$.errorMessage").value("The provided token isn't valid, please login again"));
+//    }
+
+//    @Test
+//    public void contactPlayGroupsAuthValidTest() throws Exception {
+//        List<String> spellTableUrls = new ArrayList<>();
+//        spellTableUrls.add("spelltable.com");
+//
+//        PodMember podMember = new PodMember();
+//        podMember.setMember("member");
+//        podMember.setMemberEmail("member@gmail.com");
+//        podMember.setId(1);
+//        podMember.setName("name");
+//        podMember.setOwner("owner");
+//
+//        List<PodMember> podMembers = new ArrayList<>();
+//        podMembers.add(podMember);
+//
+//        List<PlayGroup> playGroups = new ArrayList<>();
+//        playGroups.add(new PlayGroup(podMembers));
+//
+//        ContactPod contactPod = new ContactPod(spellTableUrls, playGroups);
+//        when(usersService.isTokenValid(any(String.class))).thenReturn(true);
+//
+//        PodsService podsServiceMock = mock(PodsService.class);
+//        doNothing().when(podsServiceMock).emailPlayGroups(any());
+//
+//        mockMvc.perform(post("/pods/contact")
+//                .header("Authorization", "token")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(testUtils.asJsonString(contactPod))
+//                .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//    }
 }
