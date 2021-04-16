@@ -185,34 +185,34 @@ public class PodsControllerTests {
                 .andExpect(jsonPath("$.playGroups").isArray());
     }
 
-    @Test
-    public void contactPlayGroupsAuthNotValidTest() throws Exception {
-        List<String> spellTableUrls = new ArrayList<>();
-        spellTableUrls.add("spelltable.com");
-
-        PodMember podMember = new PodMember();
-        podMember.setMember("member");
-        podMember.setMemberEmail("member@gmail.com");
-        podMember.setId(1);
-        podMember.setName("name");
-        podMember.setOwner("owner");
-
-        List<PodMember> podMembers = new ArrayList<>();
-        podMembers.add(podMember);
-
-        List<PlayGroup> playGroups = new ArrayList<>();
-        playGroups.add(new PlayGroup(podMembers));
-
-        ContactPod contactPod = new ContactPod(spellTableUrls, playGroups);
-        when(usersService.isTokenValid(any(String.class))).thenReturn(false);
-
-        mockMvc.perform(post("/pods/contact")
-                .header("Authorization", "token")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(testUtils.asJsonString(contactPod))
-                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.errorMessage").value("The provided token isn't valid, please login again"));
-    }
+//    @Test
+//    public void contactPlayGroupsAuthNotValidTest() throws Exception {
+//        List<String> spellTableUrls = new ArrayList<>();
+//        spellTableUrls.add("spelltable.com");
+//
+//        PodMember podMember = new PodMember();
+//        podMember.setMember("member");
+//        podMember.setMemberEmail("member@gmail.com");
+//        podMember.setId(1);
+//        podMember.setName("name");
+//        podMember.setOwner("owner");
+//
+//        List<PodMember> podMembers = new ArrayList<>();
+//        podMembers.add(podMember);
+//
+//        List<PlayGroup> playGroups = new ArrayList<>();
+//        playGroups.add(new PlayGroup(podMembers));
+//
+//        ContactPod contactPod = new ContactPod(spellTableUrls, playGroups);
+//        when(usersService.isTokenValid(any(String.class))).thenReturn(false);
+//
+//        mockMvc.perform(post("/pods/contact")
+//                .header("Authorization", "token")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(testUtils.asJsonString(contactPod))
+//                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized())
+//                .andExpect(jsonPath("$.errorMessage").value("The provided token isn't valid, please login again"));
+//    }
 
 //    @Test
 //    public void contactPlayGroupsAuthValidTest() throws Exception {
