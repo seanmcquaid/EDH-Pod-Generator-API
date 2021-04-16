@@ -80,6 +80,7 @@ public class PodsService {
                         .to(member.getMember(), member.getMemberEmail())
                         .withPlainText(spellTableUrl)
                         .from(from)
+                        .withSubject("Your Pod!")
                         .buildEmail();
                 Mailer mailer = MailerBuilder
                         .withSMTPServer("smtp.host.com", 25)
