@@ -22,10 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringRunner.class)
@@ -216,29 +215,34 @@ public class PodsControllerTests {
     }
 
     @Test
-    public void contactPlayGroupsAuthValidSpellTableUrlsAmountEqualsPlayGroupsAmountTest() throws Exception {
-        when(usersService.isTokenValid(any(String.class))).thenReturn(true);
-        when(podsService.getPodMembers(any())).thenReturn(new ArrayList<>());
+    public void contactPlayGroupsAuthValidTest() throws Exception {
+        List<String> spellTableUrls = new ArrayList<>();
+        spellTableUrls.add("spelltable.com");
 
-        mockMvc.perform(get("/pods/generate/name1")
+        PodMember podMember = new PodMember();
+        podMember.setMember("member");
+        podMember.setMemberEmail("member@gmail.com");
+        podMember.setId(1);
+        podMember.setName("name");
+        podMember.setOwner("owner");
+
+        List<PodMember> podMembers = new ArrayList<>();
+        podMembers.add(podMember);
+
+        List<PlayGroup> playGroups = new ArrayList<>();
+        playGroups.add(new PlayGroup(podMembers));
+
+        ContactPod contactPod = new ContactPod(spellTableUrls, playGroups);
+        when(usersService.isTokenValid(any(String.class))).thenReturn(true);
+
+        PodsService podsServiceMock = mock(PodsService.class);
+        doNothing().when(podsServiceMock).emailPlayGroups(any());
+
+        mockMvc.perform(post("/pods/contact")
                 .header("Authorization", "token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.playGroups").isArray());
-    }
-
-    @Test
-    public void contactPlayGroupsTest() throws Exception {
-        String encodedToken = testUtils.generateToken("sean");
-        Jws<Claims> decodedToken = testUtils.decodeToken(encodedToken);
-
-        when(usersService.isTokenValid(any(String.class))).thenReturn(true);
-        when(podsService.getPodMembers(any())).thenReturn(new ArrayList<>());
-
-        mockMvc.perform(get("/pods/generate/name1")
-                .header("Authorization", "token")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andExpect(jsonPath("$.playGroups").isArray());
+                .content(testUtils.asJsonString(contactPod))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
