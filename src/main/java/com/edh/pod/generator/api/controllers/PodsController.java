@@ -96,6 +96,15 @@ public class PodsController {
             body.put("errorMessage", "The provided token isn't valid, please login again");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
         }
+
+        if(contactPod.getSpellTableUrls().size() != contactPod.getPlayGroups().size()){
+            Map<String, String> body = new HashMap<>();
+            body.put("errorMessage", "Please provide the same amount of spell table urls as playgroups");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(body);
+        }
+
+        podsService.emailPlayGroups(contactPod);
+
         return ResponseEntity.ok().build();
     }
 
