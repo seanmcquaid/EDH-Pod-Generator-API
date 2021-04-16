@@ -1,5 +1,7 @@
 package com.edh.pod.generator.api.controllers;
 
+import com.edh.pod.generator.api.models.ContactPod;
+import com.edh.pod.generator.api.models.PlayGroup;
 import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
 import com.edh.pod.generator.api.services.PodsService;
@@ -176,6 +178,62 @@ public class PodsControllerTests {
         when(podsService.sortIntoPods(any())).thenReturn(new ArrayList<>());
         when(podsService.getPodByName(any(), any())).thenReturn(new Pod(new ArrayList<>(), "Pod1"));
         when(podsService.sortIntoPlayGroups(any())).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get("/pods/generate/name1")
+                .header("Authorization", "token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.playGroups").isArray());
+    }
+
+    @Test
+    public void contactPlayGroupsAuthNotValidTest() throws Exception {
+        List<String> spellTableUrls = new ArrayList<>();
+        spellTableUrls.add("spelltable.com");
+
+        PodMember podMember = new PodMember();
+        podMember.setMember("member");
+        podMember.setMemberEmail("member@gmail.com");
+        podMember.setId(1);
+        podMember.setName("name");
+        podMember.setOwner("owner");
+
+        List<PodMember> podMembers = new ArrayList<>();
+        podMembers.add(podMember);
+
+        List<PlayGroup> playGroups = new ArrayList<>();
+        playGroups.add(new PlayGroup(podMembers));
+
+        ContactPod contactPod = new ContactPod(spellTableUrls, playGroups);
+        when(usersService.isTokenValid(any(String.class))).thenReturn(false);
+
+        mockMvc.perform(post("/pods/contact")
+                .header("Authorization", "token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(testUtils.asJsonString(contactPod))
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.errorMessage").value("The provided token isn't valid, please login again"));
+    }
+
+    @Test
+    public void contactPlayGroupsAuthValidSpellTableUrlsAmountEqualsPlayGroupsAmountTest() throws Exception {
+        when(usersService.isTokenValid(any(String.class))).thenReturn(true);
+        when(podsService.getPodMembers(any())).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get("/pods/generate/name1")
+                .header("Authorization", "token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.playGroups").isArray());
+    }
+
+    @Test
+    public void contactPlayGroupsTest() throws Exception {
+        String encodedToken = testUtils.generateToken("sean");
+        Jws<Claims> decodedToken = testUtils.decodeToken(encodedToken);
+
+        when(usersService.isTokenValid(any(String.class))).thenReturn(true);
+        when(podsService.getPodMembers(any())).thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/pods/generate/name1")
                 .header("Authorization", "token")
