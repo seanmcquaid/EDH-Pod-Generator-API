@@ -95,7 +95,14 @@ public class PodsController {
             body.put("errorMessage", "The provided token isn't valid, please login again");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
         }
-        return ResponseEntity.ok().build();
+        Jws<Claims> token = usersService.decodeToken(authHeader);
+        List<PodMember> podMembers = podsService.deletePod(token.getBody().getSubject(), podName);
+        List<Pod> sortedPods = podsService.sortIntoPods(podMembers);
+
+        Map<String, List<Pod>> body = new HashMap<>();
+        body.put("pods", sortedPods);
+
+        return ResponseEntity.ok().body(body);
     }
 
     @DeleteMapping("{podName}/member/{memberName}")
@@ -106,6 +113,14 @@ public class PodsController {
             body.put("errorMessage", "The provided token isn't valid, please login again");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
         }
-        return ResponseEntity.ok().build();
+        Jws<Claims> token = usersService.decodeToken(authHeader);
+
+        List<PodMember> podMembers = podsService.deletePodMember(token.getBody().getSubject(), memberName, podName);
+        List<Pod> sortedPods = podsService.sortIntoPods(podMembers);
+
+        Map<String, List<Pod>> body = new HashMap<>();
+        body.put("pods", sortedPods);
+
+        return ResponseEntity.ok().body(body);
     }
 }
