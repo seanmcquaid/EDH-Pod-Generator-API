@@ -87,18 +87,25 @@ public class PodsController {
         return ResponseEntity.ok().body(body);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity getPod(@PathVariable("id") String podId){
+    @DeleteMapping("/{name}")
+    public ResponseEntity deletePod(@RequestHeader("Authorization") String authHeader, @PathVariable("name") String podName){
+        boolean isTokenValid = usersService.isTokenValid(authHeader);
+        if(!isTokenValid){
+            Map<String, String> body = new HashMap<>();
+            body.put("errorMessage", "The provided token isn't valid, please login again");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        }
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity editPod(@RequestBody PodMember podMember, @PathVariable("id") String podId){
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity deletePod(@PathVariable("id") String podId){
+    @DeleteMapping("/member/{name}")
+    public ResponseEntity deletePodMember(@RequestHeader("Authorization") String authHeader, @PathVariable("name") String memberName){
+        boolean isTokenValid = usersService.isTokenValid(authHeader);
+        if(!isTokenValid){
+            Map<String, String> body = new HashMap<>();
+            body.put("errorMessage", "The provided token isn't valid, please login again");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        }
         return ResponseEntity.ok().build();
     }
 }
