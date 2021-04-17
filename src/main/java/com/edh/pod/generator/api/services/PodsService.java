@@ -21,6 +21,16 @@ public class PodsService {
         return podMemberRepository.getPodMembersByOwnerAndName(ownerName, podMemberInfo.getName());
     }
 
+    public List<PodMember> deletePod(String ownerName, String podName){
+        podMemberRepository.deletePod(ownerName, podName);
+        return podMemberRepository.getPodMembersByOwnerAndName(ownerName, podName);
+    }
+
+    public List<PodMember> deletePodMember(String ownerName, String memberName, String podName){
+        podMemberRepository.deletePodMember(ownerName, memberName, podName);
+        return podMemberRepository.getPodMembersByOwnerAndName(ownerName, podName);
+    }
+
     public List<PodMember> getPodMembers(String owner){
         return podMemberRepository.getPodMembers(owner);
     }
