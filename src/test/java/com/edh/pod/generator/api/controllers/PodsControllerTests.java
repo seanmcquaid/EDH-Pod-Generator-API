@@ -211,25 +211,14 @@ public class PodsControllerTests {
     }
 
     @Test
-    public void deletePodMemberAuthNotValidTest(){
-        PodMember podMember = new PodMember();
-        podMember.setId(1);
-        podMember.setOwner("sean");
-        podMember.setMember("terrell");
-        podMember.setMemberEmail("memberemail@gmail.com");
-        podMember.setName("name1");
+    public void deletePodMemberAuthNotValidTest() throws Exception {
+        when(usersService.isTokenValid(any(String.class))).thenReturn(false);
 
-        List<PodMember> podMembers = new ArrayList<>();
-        podMembers.add(podMember);
-
-        List<Pod> sortedPods = new ArrayList<>();
-        sortedPods.add(new Pod(podMembers, "name1"));
-
-        String encodedToken = testUtils.generateToken("sean");
-        Jws<Claims> decodedToken = testUtils.decodeToken(encodedToken);
-
-        when(usersService.isTokenValid(any(String.class))).thenReturn(true);
-        when(usersService.decodeToken(any())).thenReturn(decodedToken);
+        mockMvc.perform(delete("/pods/name1/member/memberName")
+                .header("Authorization", "token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.errorMessage").value("The provided token isn't valid, please login again"));
     }
 
     @Test
