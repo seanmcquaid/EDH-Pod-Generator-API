@@ -1,20 +1,15 @@
 package com.edh.pod.generator.api.services;
 
-import com.edh.pod.generator.api.models.ContactPod;
 import com.edh.pod.generator.api.models.PlayGroup;
 import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
 import com.edh.pod.generator.api.repositories.PodMemberRepository;
-import org.simplejavamail.api.email.Email;
-import org.simplejavamail.api.mailer.Mailer;
-import org.simplejavamail.mailer.MailerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.simplejavamail.email.*;
 @Service
 public class PodsService {
 
@@ -68,26 +63,5 @@ public class PodsService {
         }
 
         return playGroups;
-    }
-
-    public void emailPlayGroups(ContactPod contactPod){
-        for(int i = 0; i < contactPod.getSpellTableUrls().size(); i++){
-            PlayGroup playGroup = contactPod.getPlayGroups().get(i);
-            String spellTableUrl = contactPod.getSpellTableUrls().get(i);
-            playGroup.getPlayGroupMembers().forEach(member -> {
-                String from = "edh.pod.generator@memes.org";
-                Email email = EmailBuilder.startingBlank()
-                        .to(member.getMember(), member.getMemberEmail())
-                        .withPlainText(spellTableUrl)
-                        .from(from)
-                        .withSubject("Your Pod!")
-                        .buildEmail();
-                Mailer mailer = MailerBuilder
-                        .withSMTPServer("smtp.host.com", 25)
-                        .buildMailer();
-                mailer.testConnection();
-                mailer.sendMail(email);
-            });
-        }
     }
 }

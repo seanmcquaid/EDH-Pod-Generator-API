@@ -1,6 +1,5 @@
 package com.edh.pod.generator.api.controllers;
 
-import com.edh.pod.generator.api.models.ContactPod;
 import com.edh.pod.generator.api.models.PlayGroup;
 import com.edh.pod.generator.api.models.Pod;
 import com.edh.pod.generator.api.models.PodMember;
@@ -86,20 +85,6 @@ public class PodsController {
         body.put("playGroups", playGroups);
 
         return ResponseEntity.ok().body(body);
-    }
-
-    @PostMapping("/contact")
-    public ResponseEntity contactPlayGroups(@RequestHeader("Authorization") String authHeader, @RequestBody ContactPod contactPod){
-        boolean isTokenValid = usersService.isTokenValid(authHeader);
-        if(!isTokenValid){
-            Map<String, String> body = new HashMap<>();
-            body.put("errorMessage", "The provided token isn't valid, please login again");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
-        }
-
-        podsService.emailPlayGroups(contactPod);
-
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
