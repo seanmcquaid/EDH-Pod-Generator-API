@@ -98,8 +98,8 @@ public class PodsController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/member/{name}")
-    public ResponseEntity deletePodMember(@RequestHeader("Authorization") String authHeader, @PathVariable("name") String memberName){
+    @DeleteMapping("{podName}/member/{memberName}")
+    public ResponseEntity deletePodMember(@RequestHeader("Authorization") String authHeader, @PathVariable("memberName") String memberName, @PathVariable("memberName") String podName){
         boolean isTokenValid = usersService.isTokenValid(authHeader);
         if(!isTokenValid){
             Map<String, String> body = new HashMap<>();

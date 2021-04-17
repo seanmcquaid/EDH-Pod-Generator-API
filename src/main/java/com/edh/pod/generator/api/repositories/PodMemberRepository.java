@@ -21,6 +21,6 @@ public interface PodMemberRepository extends JpaRepository<PodMember, Integer>{
     @Query(value = "delete * from pod_members where owner = :owner and name = :name", nativeQuery = true)
     List<PodMember> deletePod(@Param("owner") String owner, @Param("name") String name);
 
-    @Query(value = "delete * from pod_members where owner = :owner and member = :member", nativeQuery = true)
-    List<PodMember> deletePodMember(@Param("owner") String owner, @Param("member") String member);
+    @Query(value = "delete * from pod_members where owner = :owner and member = :member and name = :name", nativeQuery = true)
+    List<PodMember> deletePodMember(@Param("owner") String owner, @Param("member") String member, @Param("name") String name);
 }
